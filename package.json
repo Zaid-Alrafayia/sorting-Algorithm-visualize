@@ -1,0 +1,28 @@
+{
+  "name": "sorting-algorithm-visualize",
+  "version": "1.0.0",
+  "description": "visualize the time complixity of 3 sorting algorithms",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zaid-Alrafayia/algorthim_visualization_through_web.git"
+  },
+  "keywords": [
+    "d3.js",
+    "algorthims",
+    "website",
+    "js"
+  ],
+  "author": "Zaid Alrafayia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zaid-Alrafayia/algorthim_visualization_through_web/issues"
+  },
+  "homepage": "https://github.com/Zaid-Alrafayia/algorthim_visualization_through_web#readme",
+  "dependencies": {
+    "bootstrap": "^5.3.3"
+  }
+}
