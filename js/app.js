@@ -1,12 +1,13 @@
 //#region algorthims functions
-//<!-----------------Bubble Sort----------------->
 function bubbleSort(arr) {
   let len = arr.length;
   let swap = 0;
   let comparison = 0;
+  const starttime = performance.now();
   for (let i = 0; i < len; i++) {
     comparison++;
-    for (let j = 0; j < len; j++) {
+    for (let j = 0; j < len - 1; j++) {
+      // Fix inner loop to avoid out-of-bounds access
       if (arr[j] > arr[j + 1]) {
         let tmp = arr[j];
         arr[j] = arr[j + 1];
@@ -15,15 +16,23 @@ function bubbleSort(arr) {
       }
     }
   }
-  return { sortedArray: arr, swaps: swap, comparisons: comparison };
+  const endtime = performance.now();
+  return {
+    sortedArray: arr,
+    swaps: swap,
+    comparisons: comparison,
+    time: endtime - starttime, // Time in seconds
+  };
 }
+
 function descBubbleSort(arr) {
   let len = arr.length;
   let swap = 0;
   let comparison = 0;
+  const starttime = performance.now();
   for (let i = 0; i < len; i++) {
     comparison++;
-    for (let j = 0; j < len; j++) {
+    for (let j = 0; j < len - 1; j++) {
       if (arr[j] < arr[j + 1]) {
         let tmp = arr[j];
         arr[j] = arr[j + 1];
@@ -32,13 +41,21 @@ function descBubbleSort(arr) {
       }
     }
   }
-  return { sortedArray: arr, swaps: swap, comparisons: comparison };
+  const endtime = performance.now();
+  return {
+    sortedArray: arr,
+    swaps: swap,
+    comparisons: comparison,
+    time: endtime - starttime, // Time in seconds
+  };
 }
-//<!-----------------Selection Sort----------------->
+
+// Selection Sort
 function selectionSort(arr) {
   let len = arr.length;
   let swap = 0;
   let comparison = 0;
+  const starttime = performance.now();
   for (let i = 0; i < len; i++) {
     let min = i;
     for (let j = i + 1; j < len; j++) {
@@ -54,12 +71,20 @@ function selectionSort(arr) {
       swap++;
     }
   }
-  return { sortedArray: arr, swaps: swap, comparisons: comparison };
+  const endtime = performance.now();
+  return {
+    sortedArray: arr,
+    swaps: swap,
+    comparisons: comparison,
+    time: endtime - starttime, // Time in seconds
+  };
 }
+
 function descSelectionSort(arr) {
   let len = arr.length;
   let swap = 0;
   let comparison = 0;
+  const starttime = performance.now();
   for (let i = 0; i < len; i++) {
     let min = i;
     for (let j = i + 1; j < len; j++) {
@@ -75,104 +100,153 @@ function descSelectionSort(arr) {
       swap++;
     }
   }
-  return { sortedArray: arr, swaps: swap, comparisons: comparison };
+  const endtime = performance.now();
+  return {
+    sortedArray: arr,
+    swaps: swap,
+    comparisons: comparison,
+    time: endtime - starttime, // Time in seconds
+  };
 }
-//<!-----------------Insertion Sort----------------->
 function insertionSort(arr) {
   let len = arr.length;
+  let swap = 0;
+  let comparison = 0;
+  const starttime = performance.now();
+
   for (let i = 1; i < len; i++) {
     let key = arr[i];
     let j = i - 1;
+
+    // Count comparisons in while loop
+    comparison++;
     while (j >= 0 && arr[j] > key) {
       arr[j + 1] = arr[j];
       j = j - 1;
+      swap++; // Count each swap
     }
     arr[j + 1] = key;
   }
-  return arr;
+
+  const endtime = performance.now();
+  return {
+    sortedArray: arr,
+    time: endtime - starttime, // Time in seconds
+    swaps: swap,
+    comparisons: comparison,
+  };
 }
+
 function descInsertionSort(arr) {
   let len = arr.length;
+  let swap = 0;
+  let comparison = 0;
+  const starttime = performance.now();
+
   for (let i = 1; i < len; i++) {
     let key = arr[i];
     let j = i - 1;
+
+    // Count comparisons in while loop
+    comparison++;
     while (j >= 0 && arr[j] < key) {
       arr[j + 1] = arr[j];
       j = j - 1;
+      swap++; // Count each swap
     }
     arr[j + 1] = key;
   }
-  return arr;
+
+  const endtime = performance.now();
+  return {
+    sortedArray: arr,
+    time: endtime - starttime, // Time in seconds
+    swaps: swap,
+    comparisons: comparison,
+  };
 }
-//<!-----------------Merge Sort----------------->
-function mergeSort(arr) {
-  if (arr.length <= 1) {
-    return arr;
-  }
-  let mid = Math.floor(arr.length / 2);
-  let left = arr.slice(0, mid);
-  let right = arr.slice(mid);
-  return merge(mergeSort(left), mergeSort(right));
-}
-function merge(left, right) {
-  let result = [];
-  let leftIndex = 0;
-  let rightIndex = 0;
-  while (leftIndex < left.length && rightIndex < right.length) {
-    if (left[leftIndex] < right[rightIndex]) {
-      result.push(left[leftIndex]);
-      leftIndex++;
-    } else {
-      result.push(right[rightIndex]);
-      rightIndex++;
-    }
-  }
-  return result.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
-}
-function descMergeSort(arr) {
-  if (arr.length <= 1) {
-    return arr;
-  }
-  let mid = Math.floor(arr.length / 2);
-  let left = arr.slice(0, mid);
-  let right = arr.slice(mid);
-  return merge(descMergeSort(left), descMergeSort(right));
-}
-//<!-----------------Quick Sort----------------->
 function quickSort(arr) {
+  const starttime = performance.now(); // Start time for quickSort
+  let swap = 0;
+  let comparison = 0;
+
   if (arr.length <= 1) {
-    return arr;
+    const endtime = performance.now();
+    return {
+      sortedArray: arr,
+      time: endtime - starttime,
+      swaps: swap,
+      comparisons: comparison,
+    }; // Return time in seconds
   }
+
   let pivot = arr[arr.length - 1];
   let left = [];
   let right = [];
+
   for (let i = 0; i < arr.length - 1; i++) {
+    comparison++; // Increment comparison count
     if (arr[i] < pivot) {
       left.push(arr[i]);
     } else {
       right.push(arr[i]);
     }
   }
-  return quickSort(left).concat(pivot, quickSort(right));
+
+  const leftResult = quickSort(left);
+  const rightResult = quickSort(right);
+
+  const result = leftResult.sortedArray.concat(pivot, rightResult.sortedArray); // Combine the results
+
+  const endtime = performance.now();
+  return {
+    sortedArray: result,
+    time: endtime - starttime,
+    swaps: swap,
+    comparisons: comparison,
+  };
 }
 function descQuickSort(arr) {
+  const starttime = performance.now(); // Start time for descQuickSort
+  let swap = 0;
+  let comparison = 0;
+
   if (arr.length <= 1) {
-    return arr;
+    const endtime = performance.now();
+    return {
+      sortedArray: arr,
+      time: endtime - starttime,
+      swaps: swap,
+      comparisons: comparison,
+    }; // Return time in seconds
   }
+
   let pivot = arr[arr.length - 1];
   let left = [];
   let right = [];
+
   for (let i = 0; i < arr.length - 1; i++) {
+    comparison++; // Increment comparison count
     if (arr[i] > pivot) {
       left.push(arr[i]);
     } else {
       right.push(arr[i]);
     }
   }
-  return descQuickSort(left).concat(pivot, descQuickSort(right));
-}
 
-//#endregion
+  const leftResult = descQuickSort(left);
+  const rightResult = descQuickSort(right);
+
+  const result = leftResult.sortedArray.concat(pivot, rightResult.sortedArray); // Combine the results
+
+  const endtime = performance.now();
+  return {
+    sortedArray: result,
+    time: (endtime - starttime) / 1000,
+    swaps: swap,
+    comparisons: comparison,
+  };
+}
 
 document.addEventListener("DOMContentLoaded", function () {
   const selectAllCheckbox = document.getElementById("select-all");
@@ -181,7 +255,7 @@ document.addEventListener("DOMContentLoaded", function () {
   );
   function generateRandomArray() {
     let arr = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < Math.random() * 10; i++) {
       arr.push(Math.floor(Math.random() * 100));
     }
     return arr;
@@ -189,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function generateAscendingArray() {
     let arr = [];
-    let size = Math.floor(Math.random() * 10) + 1; // Ensure array has at least 1 element
+    let size = Math.floor(Math.random() * 100) + 1; // Ensure array has at least 1 element
     for (let i = 0; i < size; i++) {
       arr.push(i); // Generate a simple ascending sequence
     }
@@ -277,14 +351,16 @@ document.addEventListener("DOMContentLoaded", function () {
     return arr;
   }
   function sort(arr) {
-    const starttime = performance.now();
     const selectionObject = {
       sortingAlgorithms: updateSelectedAlgorithms(),
       inputArrayOrder: selectedArrayType,
       sortingOrder: selectedSortingOrder,
     };
-    let sortedArray = [];
 
+    let sortedArray = [];
+    let times = {};
+
+    // Bubble Sort
     if (selectionObject.sortingAlgorithms.includes("Bubble Sort")) {
       if (selectionObject.sortingOrder === "Ascending") {
         sortedArray.push(bubbleSort(arr));
@@ -293,6 +369,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
+    // Selection Sort
     if (selectionObject.sortingAlgorithms.includes("selection Sort")) {
       if (selectionObject.sortingOrder === "Ascending") {
         sortedArray.push(selectionSort(arr));
@@ -301,6 +378,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
+    // Insertion Sort
     if (selectionObject.sortingAlgorithms.includes("Insertion Sort")) {
       if (selectionObject.sortingOrder === "Ascending") {
         sortedArray.push(insertionSort(arr));
@@ -309,14 +387,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    if (selectionObject.sortingAlgorithms.includes("Merge Sort")) {
-      if (selectionObject.sortingOrder === "Ascending") {
-        sortedArray.push(mergeSort(arr));
-      } else if (selectionObject.sortingOrder === "Descending") {
-        sortedArray.push(descMergeSort(arr));
-      }
-    }
-
+    // Quick Sort
     if (selectionObject.sortingAlgorithms.includes("Quick Sort")) {
       if (selectionObject.sortingOrder === "Ascending") {
         sortedArray.push(quickSort(arr));
@@ -324,20 +395,241 @@ document.addEventListener("DOMContentLoaded", function () {
         sortedArray.push(descQuickSort(arr));
       }
     }
-    const endtime = performance.now();
-    console.log("Time taken:", endtime - starttime);
-    const time = endtime - starttime;
 
-    return sortedArray, time;
+    console.log(sortedArray); // Debugging the sorted array
+
+    // Process sortedArray and populate data
+    const data = [];
+    for (let i = 0; i < selectionObject.sortingAlgorithms.length; i++) {
+      const algorithmResult = sortedArray[i]; // Accessing each sorting result
+
+      if (algorithmResult && typeof algorithmResult === "object") {
+        // Ensure the result object contains the expected properties
+        data.push(
+          {
+            algorithm: selectionObject.sortingAlgorithms[i],
+            metric: "Swaps",
+            value: algorithmResult.swaps || 0,
+          },
+          {
+            algorithm: selectionObject.sortingAlgorithms[i],
+            metric: "Comparisons",
+            value: algorithmResult.comparisons || 0,
+          },
+          {
+            algorithm: selectionObject.sortingAlgorithms[i],
+            metric: "Time",
+            value: algorithmResult.time || 0,
+          }
+        );
+      } else {
+        console.warn(
+          `Unexpected result structure for algorithm ${selectionObject.sortingAlgorithms[i]}:`,
+          algorithmResult
+        );
+      }
+    }
+
+    console.log("Data for Chart:", data); // Debugging the data for chart
+    return sortedArray;
   }
 
+  let data = [];
+  globalThis.transformedData = [];
+  const sortedHtml = document.getElementById("sorted-array");
   const generateButton = document.getElementById("generateBtn");
+
   generateButton.addEventListener("click", function () {
     console.log(updateSelectedAlgorithms());
+
+    // Generate the array
     const arr = generate();
     console.log("Generated Array:", arr);
 
+    // Sort the array using selected algorithms
     const sortedArray = sort(arr);
     console.log("Sorted Array:", sortedArray);
+
+    data = []; // Reset data array for each new generation/sort
+    window.transformedData = []; // Reset transformedData
+
+    const selectedAlgorithms = updateSelectedAlgorithms();
+
+    // Process sortedArray to populate data
+    for (let i = 0; i < selectedAlgorithms.length; i++) {
+      const algorithmResult = sortedArray[i]; // Corresponds to each algorithm's result
+      if (algorithmResult && typeof algorithmResult === "object") {
+        data.push(
+          {
+            algorithm: selectedAlgorithms[i],
+            metric: "Swaps",
+            value: algorithmResult.swaps || 0,
+          },
+          {
+            algorithm: selectedAlgorithms[i],
+            metric: "Comparisons",
+            value: algorithmResult.comparisons || 0,
+          },
+          {
+            algorithm: selectedAlgorithms[i],
+            metric: "Time",
+            value: algorithmResult.time || 0,
+          }
+        );
+      } else {
+        console.warn(
+          `Unexpected result structure for algorithm ${selectedAlgorithms[i]}:`,
+          algorithmResult
+        );
+      }
+    }
+
+    // Transform data for chart/table
+    data.forEach((item) => {
+      const { algorithm, metric, value } = item;
+      window.transformedData.push({ algorithm, metric, value });
+    });
+
+    console.log("Data for Chart:", data);
+    console.log("Transformed Data for Table:", window.transformedData);
+    sortedHtml.innerHTML = `<h3>Sorted Array: ${sortedArray[0].sortedArray}</h3>`;
+    // Regenerate the chart
+    const chartContainer = document.getElementById("chart-container");
+    if (chartContainer) {
+      chartContainer.innerHTML = ""; // Clear previous chart if any
+      renderChart(window.transformedData, chartContainer); // Call the chart rendering function
+    }
+    updateKPIs(window.transformedData);
   });
+
+  function renderChart(data, container) {
+    const width = 928;
+    const height = 600;
+    const marginTop = 10;
+    const marginRight = 10;
+    const marginBottom = 20;
+    const marginLeft = 40;
+
+    const fx = d3
+      .scaleBand()
+      .domain(Array.from(new Set(data.map((d) => d.algorithm))))
+      .rangeRound([marginLeft, width - marginRight])
+      .paddingInner(0.1);
+
+    const metrics = Array.from(new Set(data.map((d) => d.metric))).filter(
+      (metric) => metric !== "Time"
+    ); // Remove "Time" from the metrics
+
+    const x = d3
+      .scaleBand()
+      .domain(metrics)
+      .rangeRound([0, fx.bandwidth()])
+      .padding(0.05);
+
+    const color = d3
+      .scaleOrdinal()
+      .domain(metrics)
+      .range(d3.schemeCategory10)
+      .unknown("#ccc");
+
+    const y = d3
+      .scaleLinear()
+      .domain([0, d3.max(data, (d) => d.value)])
+      .nice()
+      .rangeRound([height - marginBottom, marginTop]);
+
+    const svg = d3
+      .create("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("viewBox", [0, 0, width, height])
+      .attr("style", "max-width: 100%; height: auto;");
+
+    svg
+      .append("g")
+      .selectAll()
+      .data(d3.group(data, (d) => d.algorithm))
+      .join("g")
+      .attr("transform", ([algorithm]) => `translate(${fx(algorithm)},0)`)
+      .selectAll()
+      .data(([, d]) => d.filter((d) => d.metric !== "Time")) // Filter out the "Time" data
+      .join("rect")
+      .attr("x", (d) => x(d.metric))
+      .attr("y", (d) => y(d.value))
+      .attr("width", x.bandwidth())
+      .attr("height", (d) => y(0) - y(d.value))
+      .attr("fill", (d) => color(d.metric));
+
+    svg
+      .append("g")
+      .attr("transform", `translate(0,${height - marginBottom})`)
+      .call(d3.axisBottom(fx).tickSizeOuter(0))
+      .call((g) => g.selectAll(".domain").remove());
+
+    svg
+      .append("g")
+      .attr("transform", `translate(${marginLeft},0)`)
+      .call(d3.axisLeft(y).ticks(null, "s"))
+      .call((g) => g.selectAll(".domain").remove());
+
+    const legend = svg
+      .append("g")
+      .attr("transform", `translate(${width - marginRight - 100},${marginTop})`)
+      .selectAll("g")
+      .data(metrics)
+      .join("g")
+      .attr("transform", (d, i) => `translate(0,${i * 20})`);
+
+    legend
+      .append("rect")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", 18)
+      .attr("height", 18)
+      .attr("fill", color);
+
+    legend
+      .append("text")
+      .attr("x", 25)
+      .attr("y", 13)
+      .text((d) => d);
+
+    container.appendChild(svg.node());
+  }
+
+  function updateKPIs(transformedData) {
+    // Extract the time values for each algorithm
+    const kpiData = {};
+
+    // Loop through transformedData to get the time for each algorithm
+    transformedData.forEach((d) => {
+      const { algorithm, metric, value } = d;
+
+      // Only store time values
+      if (metric === "Time") {
+        kpiData[algorithm] = value; // Store the time for each algorithm
+      }
+    });
+
+    // Now update the KPIs in the DOM
+    const kpiContainer = document.getElementById("kpi-container");
+    kpiContainer.innerHTML = ""; // Clear any previous content
+
+    // Loop through each algorithm and display its time
+    Object.keys(kpiData).forEach((algorithm) => {
+      const time = kpiData[algorithm];
+
+      // Create a div for each algorithm's KPI
+      const kpiDiv = document.createElement("div");
+      kpiDiv.classList.add("kpi-block");
+
+      kpiDiv.innerHTML = `
+            <h3>${algorithm}</h3>
+            <p>Time: ${time} ms</p>
+        `;
+
+      // Append the KPI div to the container
+      kpiContainer.appendChild(kpiDiv);
+    });
+  }
 });

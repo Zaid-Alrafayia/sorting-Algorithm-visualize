@@ -47,12 +47,6 @@
 
               <label class="list-group-item">
                 <input class="form-check-input me-2" type="checkbox"
-                  value="Merge Sort" />
-                Merge Sort
-              </label>
-
-              <label class="list-group-item">
-                <input class="form-check-input me-2" type="checkbox"
                   value="selection Sort" />
                 selection Sort
               </label>
@@ -117,16 +111,20 @@
 
           </div>
 
-          <canvas class="my-4 w-100" id="myChart" width="900" height="380">
+          <div id="chart-container" class="mt-1"
+            style="height: auto; padding: 10px;">
+          </div>
+          <div id="kpi-container"
+            style="padding-left: 20px; display: inline-block;"></div>
+          <h2>sorted Array:</h2>
+          <div id="sorted-array" class="mt-1">
 
-          </canvas>
-
+          </div>
         </main>
       </div>
     </div>
     <script src="/js/app.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script type="module" src="/js/index.js"></script>
     <script
       src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   </body>
