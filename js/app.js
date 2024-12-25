@@ -5,9 +5,8 @@ function bubbleSort(arr) {
   let comparison = 0;
   const starttime = performance.now();
   for (let i = 0; i < len; i++) {
-    comparison++;
     for (let j = 0; j < len - 1; j++) {
-      // Fix inner loop to avoid out-of-bounds access
+      comparison++;
       if (arr[j] > arr[j + 1]) {
         let tmp = arr[j];
         arr[j] = arr[j + 1];
@@ -31,8 +30,9 @@ function descBubbleSort(arr) {
   let comparison = 0;
   const starttime = performance.now();
   for (let i = 0; i < len; i++) {
-    comparison++;
     for (let j = 0; j < len - 1; j++) {
+      comparison++;
+
       if (arr[j] < arr[j + 1]) {
         let tmp = arr[j];
         arr[j] = arr[j + 1];
@@ -64,6 +64,8 @@ function selectionSort(arr) {
         min = j;
       }
     }
+    comparison++;
+
     if (min !== i) {
       let tmp = arr[i];
       arr[i] = arr[min];
@@ -93,6 +95,8 @@ function descSelectionSort(arr) {
         min = j;
       }
     }
+    comparison++;
+
     if (min !== i) {
       let tmp = arr[i];
       arr[i] = arr[min];
@@ -110,28 +114,32 @@ function descSelectionSort(arr) {
 }
 function insertionSort(arr) {
   let len = arr.length;
-  let swap = 0;
-  let comparison = 0;
+  let swap = 0; // Count swaps
+  let comparison = 0; // Count all comparisons
   const starttime = performance.now();
 
   for (let i = 1; i < len; i++) {
     let key = arr[i];
     let j = i - 1;
 
-    // Count comparisons in while loop
-    comparison++;
-    while (j >= 0 && arr[j] > key) {
-      arr[j + 1] = arr[j];
-      j = j - 1;
-      swap++; // Count each swap
+    while (j >= 0) {
+      comparison++; // Count the comparison in the while loop
+      if (arr[j] > key) {
+        arr[j + 1] = arr[j]; // Shift element to the right
+        j--;
+        swap++; // Count the swap only when a shift happens
+      } else {
+        break; // Exit loop if condition fails
+      }
     }
-    arr[j + 1] = key;
+
+    arr[j + 1] = key; // Place the key in its correct position
   }
 
   const endtime = performance.now();
   return {
     sortedArray: arr,
-    time: endtime - starttime, // Time in seconds
+    time: endtime - starttime, // Time in milliseconds
     swaps: swap,
     comparisons: comparison,
   };
@@ -139,32 +147,37 @@ function insertionSort(arr) {
 
 function descInsertionSort(arr) {
   let len = arr.length;
-  let swap = 0;
-  let comparison = 0;
+  let swap = 0; // Count swaps
+  let comparison = 0; // Count all comparisons
   const starttime = performance.now();
 
   for (let i = 1; i < len; i++) {
     let key = arr[i];
     let j = i - 1;
 
-    // Count comparisons in while loop
-    comparison++;
-    while (j >= 0 && arr[j] < key) {
-      arr[j + 1] = arr[j];
-      j = j - 1;
-      swap++; // Count each swap
+    while (j >= 0) {
+      comparison++; // Count the comparison in the while loop
+      if (arr[j] < key) {
+        arr[j + 1] = arr[j]; // Shift element to the right
+        j--;
+        swap++; // Count the swap only when a shift happens
+      } else {
+        break; // Exit loop if condition fails
+      }
     }
-    arr[j + 1] = key;
+
+    arr[j + 1] = key; // Place the key in its correct position
   }
 
   const endtime = performance.now();
   return {
     sortedArray: arr,
-    time: endtime - starttime, // Time in seconds
+    time: endtime - starttime, // Time in milliseconds
     swaps: swap,
     comparisons: comparison,
   };
 }
+
 function quickSort(arr) {
   const starttime = performance.now(); // Start time for quickSort
   let swap = 0;
@@ -350,6 +363,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     return arr;
   }
+  let a = [];
   function sort(arr) {
     const selectionObject = {
       sortingAlgorithms: updateSelectedAlgorithms(),
@@ -359,40 +373,44 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let sortedArray = [];
     let times = {};
-
+    const arrCopyBubble = [...arr];
+    const arrCopySelect = [...arr];
+    const arrCopyInsert = [...arr];
+    const arrCopyQuick = [...arr];
+    a = arr;
     // Bubble Sort
     if (selectionObject.sortingAlgorithms.includes("Bubble Sort")) {
       if (selectionObject.sortingOrder === "Ascending") {
-        sortedArray.push(bubbleSort(arr));
+        sortedArray.push(bubbleSort(arrCopyBubble));
       } else if (selectionObject.sortingOrder === "Descending") {
-        sortedArray.push(descBubbleSort(arr));
+        sortedArray.push(descBubbleSort(arrCopyBubble));
       }
     }
 
     // Selection Sort
     if (selectionObject.sortingAlgorithms.includes("selection Sort")) {
       if (selectionObject.sortingOrder === "Ascending") {
-        sortedArray.push(selectionSort(arr));
+        sortedArray.push(selectionSort(arrCopySelect));
       } else if (selectionObject.sortingOrder === "Descending") {
-        sortedArray.push(descSelectionSort(arr));
+        sortedArray.push(descSelectionSort(arrCopySelect));
       }
     }
 
     // Insertion Sort
     if (selectionObject.sortingAlgorithms.includes("Insertion Sort")) {
       if (selectionObject.sortingOrder === "Ascending") {
-        sortedArray.push(insertionSort(arr));
+        sortedArray.push(insertionSort(arrCopyInsert));
       } else if (selectionObject.sortingOrder === "Descending") {
-        sortedArray.push(descInsertionSort(arr));
+        sortedArray.push(descInsertionSort(arrCopyInsert));
       }
     }
 
     // Quick Sort
     if (selectionObject.sortingAlgorithms.includes("Quick Sort")) {
       if (selectionObject.sortingOrder === "Ascending") {
-        sortedArray.push(quickSort(arr));
+        sortedArray.push(quickSort(arrCopyQuick));
       } else if (selectionObject.sortingOrder === "Descending") {
-        sortedArray.push(descQuickSort(arr));
+        sortedArray.push(descQuickSort(arrCopyQuick));
       }
     }
 
@@ -492,7 +510,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     console.log("Data for Chart:", data);
     console.log("Transformed Data for Table:", window.transformedData);
-    sortedHtml.innerHTML = `<h3>Sorted Array: ${sortedArray[0].sortedArray}</h3>`;
+    sortedHtml.innerHTML = `<h3 >Original Array:${a}</h3><h3>Sorted Array: ${sortedArray[0].sortedArray}</h3>`;
+    sortedHtml.classList.add("overflow-x-auto");
     // Regenerate the chart
     const chartContainer = document.getElementById("chart-container");
     if (chartContainer) {
@@ -598,38 +617,51 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function updateKPIs(transformedData) {
-    // Extract the time values for each algorithm
+    // Extract time values for each algorithm
     const kpiData = {};
 
-    // Loop through transformedData to get the time for each algorithm
-    transformedData.forEach((d) => {
-      const { algorithm, metric, value } = d;
-
-      // Only store time values
+    // Populate kpiData with time values
+    transformedData.forEach(({ algorithm, metric, value }) => {
       if (metric === "Time") {
-        kpiData[algorithm] = value; // Store the time for each algorithm
+        kpiData[algorithm] = value; // Store the time for the algorithm
       }
     });
 
-    // Now update the KPIs in the DOM
+    // Select the KPI container and clear previous content
     const kpiContainer = document.getElementById("kpi-container");
-    kpiContainer.innerHTML = ""; // Clear any previous content
+    if (!kpiContainer) {
+      console.error("KPI container not found in the DOM.");
+      return;
+    }
+    kpiContainer.innerHTML = ""; // Clear previous content
 
-    // Loop through each algorithm and display its time
-    Object.keys(kpiData).forEach((algorithm) => {
-      const time = kpiData[algorithm];
+    // Create a Bootstrap row
+    const row = document.createElement("div");
+    row.classList.add("row", "g-3"); // Add gap between cards
 
-      // Create a div for each algorithm's KPI
-      const kpiDiv = document.createElement("div");
-      kpiDiv.classList.add("kpi-block");
+    // Loop through each algorithm in kpiData and create cards
+    Object.entries(kpiData).forEach(([algorithm, time]) => {
+      // Create a Bootstrap column
+      const col = document.createElement("div");
+      col.classList.add("col-md-3", "col-sm-6");
 
-      kpiDiv.innerHTML = `
-            <h3>${algorithm}</h3>
-            <p>Time: ${time} ms</p>
-        `;
+      // Create a Bootstrap card for each algorithm's KPI
+      col.innerHTML = `
+      <div class="card shadow-sm border-0">
+        <div class="card-body text-center">
+          <h5 class="card-title text-primary">${algorithm}</h5>
+          <p class="card-text">Time: <strong>${time} ms</strong></p>
+          <p class="card-text">Array Size: <strong>${a.length} </strong></p>
 
-      // Append the KPI div to the container
-      kpiContainer.appendChild(kpiDiv);
+        </div>
+      </div>
+    `;
+
+      // Append the column to the row
+      row.appendChild(col);
     });
+
+    // Append the row to the container
+    kpiContainer.appendChild(row);
   }
 });
