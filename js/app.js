@@ -615,7 +615,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     container.appendChild(svg.node());
   }
-
   function updateKPIs(transformedData) {
     // Extract time values for each algorithm
     const kpiData = {};
@@ -643,16 +642,62 @@ document.addEventListener("DOMContentLoaded", function () {
     Object.entries(kpiData).forEach(([algorithm, time]) => {
       // Create a Bootstrap column
       const col = document.createElement("div");
-      col.classList.add("col-md-3", "col-sm-6");
+      col.classList.add("col-lg-3", "col-md-4", "col-sm-6"); // Responsive column sizes
 
       // Create a Bootstrap card for each algorithm's KPI
       col.innerHTML = `
-      <div class="card shadow-sm border-0">
-        <div class="card-body text-center">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body d-flex flex-column justify-content-between text-center">
           <h5 class="card-title text-primary">${algorithm}</h5>
           <p class="card-text">Time: <strong>${time} ms</strong></p>
-          <p class="card-text">Array Size: <strong>${a.length} </strong></p>
+          <p class="card-text">Array Size: <strong>${a.length}</strong></p>
+        </div>
+      </div>
+    `;
 
+      // Append the column to the row
+      row.appendChild(col);
+    });
+
+    // Append the row to the container
+    kpiContainer.appendChild(row);
+  }
+  function updateKPIs(transformedData) {
+    // Extract time values for each algorithm
+    const kpiData = {};
+
+    // Populate kpiData with time values
+    transformedData.forEach(({ algorithm, metric, value }) => {
+      if (metric === "Time") {
+        kpiData[algorithm] = value; // Store the time for the algorithm
+      }
+    });
+
+    // Select the KPI container and clear previous content
+    const kpiContainer = document.getElementById("kpi-container");
+    if (!kpiContainer) {
+      console.error("KPI container not found in the DOM.");
+      return;
+    }
+    kpiContainer.innerHTML = ""; // Clear previous content
+
+    // Create a Bootstrap row
+    const row = document.createElement("div");
+    row.classList.add("row", "g-3"); // Add gap between cards
+
+    // Loop through each algorithm in kpiData and create cards
+    Object.entries(kpiData).forEach(([algorithm, time]) => {
+      // Create a Bootstrap column
+      const col = document.createElement("div");
+      col.classList.add("col-lg-3", "col-md-4", "col-sm-6"); // Responsive column sizes
+
+      // Create a Bootstrap card for each algorithm's KPI
+      col.innerHTML = `
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body d-flex flex-column justify-content-between text-center">
+          <h5 class="card-title text-primary">${algorithm}</h5>
+          <p class="card-text">Time: <strong>${time} ms</strong></p>
+          <p class="card-text">Array Size: <strong>${a.length}</strong></p>
         </div>
       </div>
     `;
